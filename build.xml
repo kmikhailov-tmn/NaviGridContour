@@ -1,0 +1,42 @@
+<project name="navi-grid-contour" default="release" basedir=".">
+
+	<!-- set global properties for this build -->
+	<property name="src" value="src" />
+	<property name="build" value="classes" />
+	<property name="dist" value="." />
+	<property name="lib" value="lib" />
+	<property name="project" value="${ant.project.name}" />
+
+	<path id="run.classpath">
+				<fileset dir="${lib}">
+					<filename name="**/*.jar" />
+				</fileset>
+	</path>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" >
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}" debug="true" source="1.8" target="1.8" encoding="utf-8">
+			<classpath refid="run.classpath" />
+		</javac>
+	</target>
+
+
+	<target name="release" depends="clean, compile">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist}" />
+		<jar jarfile="${dist}/${project}.jar" basedir="${build}"/>
+		<jar jarfile="${dist}/${project}-src.zip" basedir="${src}"/>
+	</target>
+
+	<target name="clean">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+	</target>
+</project>
